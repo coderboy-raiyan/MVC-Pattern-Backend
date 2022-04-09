@@ -1,0 +1,30 @@
+{
+    "name": "Custom-Auth",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "scripts": {
+        "start": "node -r esm server.js",
+        "server": "nodemon -r esm server.js",
+        "client": "npm run dev --prefix client",
+        "start-dev": "concurrently \"yarn server\" \"yarn client\""
+    },
+    "dependencies": {
+        "bcrypt": "^5.0.1",
+        "concurrently": "^7.1.0",
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.0",
+        "esm": "^3.2.25",
+        "express": "^4.17.3",
+        "jsonwebtoken": "^8.5.1",
+        "mongoose": "^6.2.10"
+    },
+    "devDependencies": {
+        "eslint": "8.2.0",
+        "eslint-config-airbnb-base": "15.0.0",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-plugin-import": "2.25.2",
+        "eslint-plugin-prettier": "^4.0.0",
+        "prettier": "^2.6.2"
+    }
+}
