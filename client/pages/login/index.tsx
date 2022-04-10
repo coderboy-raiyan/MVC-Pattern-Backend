@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import useAuth from '../../hooks/useAuth'
 
 interface IForm {
   email: string
@@ -10,20 +11,10 @@ interface IForm {
 function Login() {
   const { register, handleSubmit } = useForm<IForm>()
   const router = useRouter()
+  const { login, error } = useAuth()
 
   const handelLogin = async (data: IForm) => {
-    try {
-      const user = await fetch('http://localhost:5000/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-type': 'application/json' },
-        body: JSON.stringify(data),
-      })
-      const userData = await user.json()
-
-      console.log(userData)
-    } catch (err) {
-      console.log(err)
-    }
+    await login(data)
   }
 
   return (
@@ -34,6 +25,11 @@ function Login() {
       >
         <div className="flex flex-col space-y-4">
           <h1 className="text-center text-3xl">Login</h1>
+          {error && (
+            <p className="center rounded bg-red-400 py-3 text-center text-white">
+              {error}
+            </p>
+          )}
           <input {...register('email')} type="email" placeholder="Email" />
           <input
             {...register('password')}

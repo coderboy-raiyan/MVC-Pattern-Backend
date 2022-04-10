@@ -6,13 +6,13 @@ export const createUser = async (req, res) => {
     try {
         const user = await User.findOne({ email: req.body.email });
 
-        if (user) return res.status(500).json({ message: 'Email is already taken' });
+        if (user) return res.status(500).send({ message: 'Email is already taken' });
 
         const result = await User(req.body).save();
 
         res.send(result);
     } catch (err) {
-        res.status(500).json({ message: err });
+        res.status(500).json({ message: 'Invalid user details' });
     }
 };
 
@@ -27,9 +27,9 @@ export const signIn = async (req, res) => {
         if (verified) {
             res.send({ email: user.email, token });
         } else {
-            res.status(500).json({ message: 'User not found' });
+            res.status(500).json({ message: 'Invalid details' });
         }
     } catch (err) {
-        res.status(500).json({ message: err });
+        res.status(500).json({ message: 'Invalid User details' });
     }
 };

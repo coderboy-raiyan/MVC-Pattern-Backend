@@ -17,6 +17,6 @@ class AuthRequest {
   }
 }
 
-const AuthHttp = new AuthRequest()
+const AuthHttpReq = new AuthRequest()
 
-export default AuthHttp
+export default AuthHttpReq
