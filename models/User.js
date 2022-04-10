@@ -1,5 +1,7 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable func-names */
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 import validator from 'validator';
 
@@ -30,6 +32,21 @@ User.pre('save', async function (next) {
     }
     next();
 });
+
+// methods
+User.methods.isVerified = async function (password) {
+    const verified = await bcrypt.compare(password, this.password);
+    return verified;
+};
+
+User.methods.generateToken = async function () {
+    const payload = {
+        email: this.email,
+        _id: this._id,
+    };
+    const token = await jwt.sign(payload, process.env.JWT_PRIVATE);
+    return `Bearer ${token}`;
+};
 
 const model = mongoose.model('User', User);
 
