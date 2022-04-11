@@ -8,9 +8,9 @@ export const createUser = async (req, res) => {
 
         if (user) return res.status(500).send({ message: 'Email is already taken' });
 
-        const result = await User(req.body).save();
+        await User(req.body).save();
 
-        res.send(result);
+        res.status(200).send({ message: 'Registration successful' });
     } catch (err) {
         res.status(500).json({ message: 'Invalid user details' });
     }
@@ -25,7 +25,12 @@ export const signIn = async (req, res) => {
         const token = await user.generateToken();
 
         if (verified) {
-            res.send({ email: user.email, token });
+            user.status = 'verified';
+            await user.save();
+            const userInfo = {
+                email: user.email,
+            };
+            res.send({ status: user.status, user: userInfo, token });
         } else {
             res.status(500).json({ message: 'Invalid details' });
         }

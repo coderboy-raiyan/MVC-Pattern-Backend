@@ -22,6 +22,14 @@ const User = mongoose.Schema(
             required: true,
             minLength: [6, 'Password must be at least 6 characters'],
         },
+        status: {
+            type: String,
+            default: 'pending',
+        },
+        role: {
+            type: String,
+            default: 'user',
+        },
     },
     { timestamps: true },
 );
@@ -44,7 +52,9 @@ User.methods.generateToken = async function () {
         email: this.email,
         _id: this._id,
     };
-    const token = await jwt.sign(payload, process.env.JWT_PRIVATE);
+    const token = await jwt.sign(payload, process.env.JWT_PRIVATE, {
+        expiresIn: process.env.JWT_EXPIRES,
+    });
     return `Bearer ${token}`;
 };
 
